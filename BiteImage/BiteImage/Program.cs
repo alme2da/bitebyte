@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -10,14 +11,17 @@ namespace BiteImage
     {
         static void Main(string[] args)
         {
-            const string IMAGE_FILE_NAME = "beach.jpg";
+            const String origin = "이미지 8.png";
+            List<Bitmap> photos = new List<Bitmap>(103);
 
-            using (FileStream fs = File.OpenRead(IMAGE_FILE_NAME))
-            using (Bitmap image = new Bitmap(fs))
-            using (Bitmap newImage = ImageEditor.PixelizationOrNull(image,50,50))
+            for(int i = 1; i <= 103; ++i)
             {
-                newImage.Save($"{Path.GetFileNameWithoutExtension(IMAGE_FILE_NAME)}_box.png", ImageFormat.Png);
+                photos.Add(new Bitmap($"이미지 {i}.png"));
             }
+
+            Bitmap image = new Bitmap(origin);
+            Bitmap mosaic = ImageEditor.PhotoPixelization(image, photos, 100, 100);
+            mosaic.Save($"{Path.GetFileNameWithoutExtension(origin)}_shift_left.png", ImageFormat.Png);
         }
     }
 }
